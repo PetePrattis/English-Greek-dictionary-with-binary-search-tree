@@ -10,117 +10,117 @@
 using namespace std;
 #define COUNT 10
 
-//δημιουργία μιας δομής δεδομένων τύπου struct με όνομα BSTnode που αποθηκεύει
-//τα στοιχεία λέξη, μετάφραση τύπου char array και
-//και άλλα στοιχεία τύπου struct τα left, right που συμβολίζουν τα παιδιά του node
+// create a struct data structure named BSTnode that it stores
+// word elements, char array type translation and
+// and other struct elements left, right that symbolize node children
 struct BSTnode {
     char word[128], translation[128];
     struct BSTnode *left, *right;
 };
 
-//αρχικοποιώ την ρίζα τως άδεια
+// initialize the root as a empty
 struct BSTnode *root = NULL;
 
-//μια μέθοδος η οποία δέχεται ως είσοδο την τιμή της λέξης και της μετάφρασης που αντιστοιχεί στην
-//διεύθυνση παραπομπής της λέξης και της μετάφρασης με χρήση Pointer και δημιουργεί ένα νέο Node
+// a method that accepts the value of the word and the translation corresponding to the input
+// Referral address of the word and translation using Pointer and creates a new Node
 struct BSTnode * createNode(char *word, char *translation) {
-    struct BSTnode *newnode;//δημιουργία παραπομπής νέου node τύπου BSTnode struct
-    //δημιουργία νέου node τύπου struct BSTnode κατανέμοντας ένα μπλοκ μνήμης επιστρέφοντας έναν pointer
-    //στην αρχη του μπλοκ με την χρήση της εντολής malloc
+    struct BSTnode *newnode;// create a reference to a new node type BSTnode struct
+Β Β Β Β  // create a new struct node type BSTnode by allocating a memory block returning a pointer
+Β Β Β Β  // at the beginning of the block using the malloc command
     newnode = (struct BSTnode *)malloc(sizeof(struct BSTnode));
-    strcpy(newnode->word, word);//αρχικοποιούμε την τιμή του νέου node για την λέξη
-    strcpy(newnode->translation, translation);//και την μετάφραση
-    newnode->left = newnode->right = NULL;//αρχικοποιούμε και τα παιδιά του νέου Node ως άδεια
-    return newnode;//επιστρέφουμε το νέο node
+    strcpy(newnode->word, word);// initialize the value of the new node for the word
+    strcpy(newnode->translation, translation);// and translation
+    newnode->left = newnode->right = NULL;// We also initialize the children of the new Node as a license
+    return newnode;// return the new node
 }
 
-//μια μέθοδος η οποία δέχεται ως είσοδο την τιμή της λέξης και της μετάφρασης που αντιστοιχεί στην
-//διεύθυνση παραπομπής της λέξης και της μετάφρασης με χρήση Pointer και προσθέτει ένα νέο node
-//κάνοντας έλεγχο αρχικά για μοναδικό κλειδί στο δέδνδρο
+// a method that accepts the value of the word and the translation corresponding to the input
+// Referral address of the word and translation using Pointer and adds a new node
+// checking first for unique key in tree
 void insert(char *word, char *translation) {
-    //δημιουργία παραπομπής γονέα, τωρινού και νέου node τύπου BSTnode struct
+    // create parent reference, current and new node type BSTnode struct
     struct BSTnode *parent = NULL, *current = NULL, *newnode = NULL;
     int res = 0;
-    if (!root) {//αν το δένδρο είναι άδειο
-            root = createNode(word, translation);//στην ρίζα εκχωρούνται οι τιμές της λέξης και της μετάφρασης
+    if (!root) {// if the tree is empty
+            root = createNode(word, translation);// The word and translation values are assigned to the root
             return;
     }
-    //για κάθε τωρινό Node που δεν είναι άδειο
+    // for any current Nodes that are not empty
     for (current = root; current !=NULL;
-        //αν για το τωρινό αποτέλεσμα η σύγκριση της εκχωρημένης λέξης
-        //και της λέξης που έχουμε για να εκχωρήσουμε είναι μεγαλύτερο του 0
-        //τότε πάμε στο δεξί παιδί αλλιώς στο αριστερό
+        // if the comparison of the assigned word for the current result
+Β Β Β Β Β Β Β Β  // and the word we have to assign is greater than 0
+Β Β Β Β Β Β Β Β  // then go to the right child otherwise to the left
         current = (res > 0) ? current->right : current->left) {
-            //η εντολή strcasecmp συγκρίνει δύο λέξεις και επιστρέφει 0 αν είναι ίδιες
-            //μικρότερο του 0 αν η 1η λέξη είναι μικρότερη λεξικογραφικά της 2ης
-            //μεγαλύτερο του 0 αν η 1η λέξη είναι μεγαλύτερη λεξικογραφικά της 2ης
+            // strcasecmp compares two words and returns 0 if they are the same
+Β Β Β Β Β Β Β Β Β Β Β Β  // less than 0 if the 1st word is less than the 2nd word
+Β Β Β Β Β Β Β Β Β Β Β Β  // greater than 0 if the 1st word is greater than the 2nd word
             res = strcasecmp(word, current->word);
-            if (res == 0) {//αν είναι ίδιες οι λέξεις
+            if (res == 0) {// if the words are the same
                 printf("Duplicate entry!!\n");
                 return;
             }
-            parent = current;//ο νέος γονέας γίνεται το τωρινό node
+            parent = current;// the new parent becomes the current node
     }
-    newnode = createNode(word, translation);//δημιουργώ νέο node
-    //αν η λέξη είναι μεγαλύτερη από τον γονέα παέι στο δεξί παιδί
-    //αλλιώς πάει στο αριστερό παιδί
+    newnode = createNode(word, translation);// create a new node
+Β Β Β Β  // if the word is larger than the parent child in the right child
+Β Β Β Β  // else go to the left kid
     res > 0 ? (parent->right = newnode) : (parent->left = newnode);
     return;
 }
 
-//μια μέθοδος η οποία δέχεται ως είσοδο την τιμή της λέξης που αντιστοιχεί στην
-//διεύθυνση παραπομπής της λέξης με χρήση Pointer και διαγράφει το node
-//που περιέχει αυτήν την λέξη και ξαναφτιάχνει το δένδρο
+// a method that accepts the value of the word corresponding to
+// Referral address of the word using Pointer and deletes the node
+// containing this word and rebuilding the tree
 void deleteNode(char *str) {
     struct BSTnode *parent = NULL, *current = NULL, *temp = NULL;
     int flag = 0, res = 0;
-    //αν η ρίζα δεν έχει αρχικοποιηθεί
+    // if the root is not initialized
     if (!root) {
             printf("BST is not present!!\n");
             return;
     }
     current = root;
-    //για πάντα
+    //forever
     while (1) {
-            //παίρνουμε το αποτέλεσμα της σύγκρισης της λέξης προς διαγραφή και της λέξης κάθε Node
+            // we get the result of comparing the word to be deleted and the word of each Node
             res = strcasecmp(current->word, str);
-            //αν σε αυτήν την επανάληψη βρήκαμε την λέξη σταματάμε αυτόν τον βρόγχο
+            // if in this iteration we find the word we stop this loop
             if (res == 0)
                     break;
             flag = res;
-            //ο νέος γονέας γίνεται το τωρινό Node
+            // the new parent becomes the current Node
             parent = current;
-            //ανάλογα από το αποτέλεσμα της σύγκρισης των λέξεων πάμε στο δεξί ή αριστερό παιδί
+            // depending on the result of the comparison of the words go to the right or left child
             current = (res > 0) ? current->left : current->right;
-            //αν το τωρινό node είναι άδειο
+            // if the current node is empty
             if (current == NULL)
                     return;
     }
-    //if δηλώσεις για διαγραφή του node
-    //αν το τωρινό node δεν έχει δεξί παιδί
+    // if statements to delete the node
+Β Β Β Β  // if the current node has no right child
     if (current->right == NULL) {
-            //το τωρινό node είναι η ρίζα και δεν έχω αριστερό παιδί
+            // the current node is the root and i have no left child
             if (current == root && current->left == NULL) {
-                    //ελευθερώνω το τωρινό Node
+                    // release the current Node
                     free(current);
-                    //η ρίζα αδειάζει
+                    // root is empty
                     root = NULL;
                     return;
-            //αλλιώς αν το τωρινό είναι η ρίζα
+            // else if the current is the root
             } else if (current == root) {
-                    //η ρίζα γίνεται το αριστερό παιδί της
+                    // the root becomes her left child
                     root = current->left;
-                    //ελευθερώνω το τωρινό Node
+                    // release the current Node
                     free (current);
                     return;
             }
 
             flag > 0 ? (parent->left = current->left) :
                         (parent->right = current->left);
-    //αλλιώς αν το τωρινό Node έχει δεξί παιδί
+    // else if the current Node has a right child
     } else {
             temp = current->right;
-            //αν δεν υπάρχει αριστερό παιδί
+            // if there is no left child
             if (!temp->left) {
                     temp->left = current->left;
                     if (current == root) {
@@ -131,9 +131,9 @@ void deleteNode(char *str) {
                     flag > 0 ? (parent->left = temp) :
                                     (parent->right = temp);
             } else {
-                    //αλλίως αν υπάρχει κα ιδεξί και αριστερό παιδί
+                    // else if there is a right and left child
                     struct BSTnode *successor = NULL;
-                    while (1) {//για πάντα
+                    while (1) {//forever
                             successor = temp->left;//
                             if (!successor->left)
                                     break;
@@ -143,8 +143,8 @@ void deleteNode(char *str) {
                     successor->left = current->left;
                     successor->right = current->right;
                     if (current == root) {
-                            root = successor;//ο διάδοχος είναι η ρίζα
-                            free(current);//ελευθερώνω το τωρινό node
+                            root = successor;// the successor is the root
+                            free(current);// release the current node
                             return;
                     }
                     (flag > 0) ? (parent->left = successor) :
@@ -155,72 +155,72 @@ void deleteNode(char *str) {
     return;
 }
 
-//μια μέθοδος η οποία δέχεται ως είσοδο την τιμή της λέξης που αντιστοιχεί στην
-//διεύθυνση παραπομπής της λέξης με χρήση Pointer και βρίσκει το node
-//που περιέχει αυτήν την λέξη και την εμφανίζει μαζί με την μετάφρασή της
+// a method that accepts the value of the word corresponding to
+// Refer to the word using Pointer and find the node
+// containing this word and displaying it along with its translation
 void findElement(char *str) {
     struct BSTnode *temp = NULL;
     int flag = 0, res = 0;
-    if (root == NULL) {//αν δεν έχει αρχικοποιηθεί το δένδρο
+    if (root == NULL) {// if the tree is not initialized
             printf("Binary Search Tree is out of station!!\n");
             return;
     }
     temp = root;
-    while (temp) {//όσο υπάρχουν Nodes
-            if ((res = strcasecmp(temp->word, str)) == 0) {//αν το αποτέλεσμα της σύγκρισης είναι 0
-                    //εμφανίζω την λέξη και τη μετάφρασή της
+    while (temp) {// as long as there are Nodes
+            if ((res = strcasecmp(temp->word, str)) == 0) {// if the result of the comparison is 0
+                    // show the word and its translation
                     printf("Word   : %s", str);
                     printf("Translation: %s", temp->translation);
                     flag = 1;
                     break;
             }
-            //αν το αποτέλεσμα είναι μεγαλύτερο του 0 πάω στο αριστερό παιδί, αλλιώς στο δεξί
+            // if the result is greater than 0 go to the left child, otherwise to the right
             temp = (res > 0) ? temp->left : temp->right;
     }
-    //αν δεν έχει βρεθεί κάποιο Node
+    // if no Node is found
     if (!flag)
             printf("Search Element not found in Binary Search Tree\n");
     return;
 }
 
-//μια μέθοδος η οποία δέχεται ως είσοδο την τιμή του node που αντιστοιχεί στην
-//διεύθυνση παραπομπής της ρίζας με χρήση Pointer και εμφανίζει όλα τα nodes
+// a method that accepts the value of the node corresponding to the input
+// Root referencing address using Pointer and showing all nodes
 void showAll(struct BSTnode *myNode) {
-    if (myNode) {//αν έχει αρχικοποιηθεί το δένδρο
-            showAll(myNode->left);//ξανακαλώ την μέθοδο περνώντας το αριστερό node
+    if (myNode) {// if the tree is initialized
+            showAll(myNode->left);// I call the method again by passing the left node
             printf("Word    : %s", myNode->word);
             printf("Translation : %s", myNode->translation);
             printf("\n");
-            showAll(myNode->right);//ξανακαλώ την μέθοδο περνώντας το δεξί node
+            showAll(myNode->right);// I call the method again by passing the right node
     }
     return;
 }
-//μια μέθοδος η οποία δέχεται ως είσοδο την τιμή του node που αντιστοιχεί στην
-//διεύθυνση παραπομπής της ρίζας με χρήση Pointer και εμφανίζει όλα τα nodes
+// a method that accepts the value of the node corresponding to the input
+// Root referencing address using Pointer and showing all nodes
 void printTree(struct BSTnode *myNode, int space) {
-        //αν έχει αρχικοποιηθεί το δένδρο
+        // if the tree is initialized
         if (myNode) {
-            //αυξάνω την απόσταση μεταξύ των επιπέδων
+            // increase the distance between the levels
             space += COUNT;
-            //πηγαίνω στο δεξί παιδί
+            // go to the right child
             printTree(myNode->right, space);
-            // εμφανίζω το τωρινό node
+            // show the current node
             cout<<endl;
             for (int i = COUNT; i < space; i++)
             cout<<"X";
             cout<<myNode->word<<"\n";
 
-            //πηγαίνω στο αριστερό παιδί
+            // go to the left kid
             printTree(myNode->left, space);
         }
         return;
 }
 
-//αυτή είναι η main μέθοδος
+// this is the main method
 int main() {
     int ch;
     char str[128], translation[128];
-    while (1) {//για πάντα εμφανίζω τις λειτουργίες του προγράμματος
+    while (1) {// I always display the program functions
             printf("\n1. Insertion\t2. Deletion \t3. Searching \t4. Show all \t5. Print tree \t6. Exit");
             printf("\nEnter your choice:");
             scanf("%d", &ch);
