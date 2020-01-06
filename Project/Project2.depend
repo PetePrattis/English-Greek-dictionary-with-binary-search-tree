@@ -1,0 +1,11 @@
+# depslib dependency file v1.0
+1562322940 source:c:\users\panagiotis prattis\appdata\roaming\codeblocks\project2\main.cpp
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<map>
+	<iostream>
+	<queue>
+	<bits/stdc++.h>
+	<iostream>
+
